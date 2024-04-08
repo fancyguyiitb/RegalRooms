@@ -1,36 +1,33 @@
 import express from "express";
 import Hotel from "../models/Hotel.js";
 import connectToMongo from "../index.js";
+import { createHotel, updateHotel, deleteHotel, getAllHotels, getHotel } from "../controllers/hotel.js";
+// import next from "../index.js";
 
 const router = express.Router();
 
 //CREATE NEW HOTEL
-router.post("/newHotel", async (req, res)=>{
-    
-    try {
-        await connectToMongo();
+router.post("/newHotel", (req, res) => {
+  createHotel(req, res);
+});
 
-        //creating the new user
-        let savedHotel = await Hotel.create({
-        name: req.body.name,
-        type: req.body.type,
-        city: req.body.city,
-        address: req.body.address,
-        distance: req.body.distance,
-        title: req.body.title,
-        desc: req.body.desc,
-        cheapestPrice: req.body.cheapestPrice,
-      });
+//UPDATE EXISTING HOTEL
+router.put("/:id", async (req, res) => {
+  updateHotel(req, res);
+});
 
-        // const newHotel = new Hotel(req.body);
-        // const data = await Hotel(newHotel)
-        // const savedHotel = await data.save();
-        res.status(200).json(savedHotel);
-        console.log(savedHotel);
-    } catch (error) {
-        res.status(500);
-        console.log(error);
-    }
-})
+//DELETING EXISTING HOTEL
+router.delete("/:id", async (req, res) => {
+  deleteHotel(req, res);
+});
 
+//GET ALL HOTELS
+router.get("/", async (req, res) => {
+  getAllHotels(req, res);
+});
+
+//GET SPECIFIC HOTELS
+router.get("/:id", async (req, res) => {
+    getHotel(req, res);
+  });
 export default router;
