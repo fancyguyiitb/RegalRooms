@@ -4,8 +4,9 @@ import { MongoClient } from "mongodb";
 import authRoutes from "./routes/auth.js";
 import roomRoutes from "./routes/rooms.js";
 import hotelRoutes from "./routes/hotels.js";
-import userRoutes from "./routes/auth.js";
+import userRoutes from "./routes/users.js";
 import mongoose from "mongoose";
+import cookieParser  from "cookie-parser";
 
 async function listDatabases(client) {
   const databasesList = await client.db().admin().listDatabases();
@@ -15,8 +16,9 @@ async function listDatabases(client) {
 }
 
 async function connectToMongo() {
-  const uri =
-    "mongodb+srv://technicalpurush:juarez2004@regalcluster.khkixh0.mongodb.net/regalRooms?retryWrites=true&w=majority&appName=regalCluster";
+  // const uri =
+  //   "mongodb+srv://technicalpurush:juarez2004@regalcluster.khkixh0.mongodb.net/regalRooms?retryWrites=true&w=majority&appName=regalCluster";
+  const uri = "mongodb://localhost:27017/";
 
   const client = new MongoClient(uri, {
     // useNewUrlParser: true,
@@ -45,8 +47,9 @@ const port = 8000;
 
 //MIDDLEWARE
 app.use(express.json());
-app.use((err, req, res, next)=>{
-  return res.status(500).json("Error occurred!"+ err);
+app.use(cookieParser());
+app.use((err, req, res, next) => {
+  return res.status(500).json("Error occurred!" + err);
 });
 
 //middlewares
